@@ -24,6 +24,7 @@ Route::group(['prefix' => 'auth'], function () {
     // Las siguientes rutas además del prefijo requieren que el usuario tenga un token válido
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
+        Route::get('destroyUser', 'AuthController@destroyUser');
         Route::get('user', 'AuthController@user');
         // Aquí agrega tus rutas de la API. En mi caso (EN MI CASO, EL TUYO PUEDE VARIAR) he agregado una de productos
         // Route::get("productos", function () {

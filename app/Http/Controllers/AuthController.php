@@ -64,4 +64,15 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     }
+
+    public function destroyUser(Request $request)
+    {
+        $request->user()->token()->revoke();
+        $usuario = $request->user()->id;
+        $user = User::find($usuario);
+        $user->delete();
+
+        return response()->json(['message' =>
+            'Successfully logged out' . $usuario]);
+    }
 }
