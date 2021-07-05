@@ -5,16 +5,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function signup(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error en el registro, compruebe los datos introducidos',
+                'error' => $validator->errors(),
+            ], 422);
+        }
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
